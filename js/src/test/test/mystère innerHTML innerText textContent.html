@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<!-- Project:markPointPage -->
+<html lang="fr">
+<head>
+    <title>mystère nodeValue data outerHTML innerHTML innerText textContent wholeText</title>
+	<meta name="description" content="mystère nodeValue data outerHTML innerHTML innerText textContent wholeText" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="pml" />
+
+    <!--<meta name="robots" content="noindex" />-->
+
+<script type="text/javascript">
+    "use strict"
+    try{ "".a = ""; console.log( "all demo test markPointPage","not in strict mode" ) } catch( e ){}
+    var shortMenu_pml, shortUlMenu, mainSites_pml, fullMenu_pml, viewDemo_pml, allButton, btReduceFullMenu, btExpandFullMenu, btHome, btShortMenu
+    function bodyLoad(){
+var tagInfo = document.createTextNode("Écrire & ou <br> n'a aucun effet.")
+var divtext = document.createElement("div")
+var divtext2 = document.createElement("div")
+var divtext3 = document.createElement("div")
+var divtext4 = document.createElement("div")
+var divtext5 = document.createElement("div")
+var divtext6 = document.createElement("div")
+var divtext7 = document.createElement("div")
+divtext.appendChild(tagInfo)
+console.log (tagInfo)
+console.log (divtext)
+console.log (tagInfo.data) ;"Écrire & ou <br> n'a aucun effet."
+console.log (tagInfo.nodeValue) ;"Écrire & ou <br> n'a aucun effet."
+console.log (tagInfo.textContent) ;"Écrire & ou <br> n'a aucun effet."
+console.log (tagInfo.wholeText) ;"Écrire & ou <br> n'a aucun effet."
+
+tagInfo.textContent = "&#128540; & \t\tou\n <br> "
+console.log ("data",tagInfo.data) ;"&#128540; & \t\tou\n <br> " 
+console.log ("nodeValue",tagInfo.nodeValue) ;"&#128540; & \t\tou\n <br> " 
+console.log ("textContent",tagInfo.textContent) ;"&#128540; & \t\tou\n <br> "
+console.log ("wholeText",tagInfo.wholeText) ;"&#128540; & \t\tou\n <br> "
+
+console.log ("1 outerHTML",divtext.outerHTML) ;"<div>&amp;#128540; &amp; \t\tou\n &lt;br&gt; </div>"
+console.log ("1 innerHTML",divtext.innerHTML) ;"&amp;#128540; &amp; \t\tou\n &lt;br&gt; "
+console.log ("1 innerText",divtext.innerText) ;"&#128540; & \t\tou\n <br> "
+console.log ("1 textContent",divtext.textContent) ;"&#128540; & \t\tou\n <br> "
+
+
+divtext4.innerHTML = divtext.outerHTML; "outerHTML =";"<div>&amp;#128540; &amp; \t\tou\n &lt;br&gt; </div>"
+document.getElementsByTagName("body")[0].appendChild(divtext4)
+console.log ("4 innerHTML",divtext4.innerHTML) ;"<div>&amp;#128540; &amp; \t\tou\n &lt;br&gt; </div>"
+console.log ("4 innerText",divtext4.innerText) ;"&#128540; & ou <br>"
+console.log ("4 textContent",divtext4.textContent) ;"&#128540; & \t\tou\n <br>"
+
+divtext3.innerText = divtext.outerHTML ;"innerText converti tout en texte html, retire \n mais pas \t dans les enfantune balise !" 
+document.getElementsByTagName("body")[0].appendChild(divtext3)
+console.log ("3 innerHTML",divtext3.innerHTML) ;"&lt;div&gt;&amp;amp;#128540; &amp;amp; \t\tou<br> &amp;lt;br&amp;gt; &lt;/div&gt;"
+console.log ("3 innerText",divtext3.innerText) ;"<div>&amp;#128540; &amp; ou\n &lt;br&gt; </div>"
+console.log ("3 textContent",divtext3.textContent) ;"<div>&amp;#128540; &amp; \t\tou &lt;br&gt; </div>"
+
+divtext2.textContent = divtext.outerHTML
+document.getElementsByTagName("body")[0].appendChild(divtext2)
+console.log ("2 innerHTML",divtext2.innerHTML) ;"&lt;div&gt;&amp;amp;#128540; &amp;amp; \t\tou\n &amp;lt;br&amp;gt; &lt;/div&gt;"
+console.log ("2 innerText",divtext2.innerText) ;"<div>&amp;#128540; &amp; ou &lt;br&gt; </div>"
+console.log ("2 textContent",divtext2.textContent) ;"<div>&amp;#128540; &amp; \t\tou\n &lt;br&gt; </div>"
+
+
+
+divtext5.innerHTML = "&#128540; & \t\tou\n br <br> "
+document.getElementsByTagName("body")[0].appendChild(divtext5)
+console.log ("5 innerHTML",divtext5.innerHTML) ;"😜 &amp; \t\tou\n br <br> "
+console.log ("5 innerText",divtext5.innerText) ;"😜 & ou br "
+console.log ("5 textContent",divtext5.textContent) ;"😜 & \t\tou\n br "
+
+divtext6.innerText = "&#128540; & \t\tou\n <br> "
+document.getElementsByTagName("body")[0].appendChild(divtext6)
+console.log ("6 innerHTML",divtext6.innerHTML)
+console.log ("6 innerText",divtext6.innerText)
+console.log ("6 textContent",divtext6.textContent)
+
+divtext7.innerText = "&#128540; & \t\tou\n <br> "
+document.getElementsByTagName("body")[0].appendChild(divtext7)
+console.log ("7 innerHTML",divtext7.innerHTML)
+console.log ("7 innerText",divtext7.innerText)
+console.log ("7 textContent",divtext7.textContent)
+
+    }
+    
+    </script>
+</head>
+
+<body onload="bodyLoad()" onresize="resizeMenu()">
+
+</body>
+</html>

@@ -1,0 +1,1729 @@
+<!DOCTYPE HTML>
+<!-- Project:markPointPage -->
+<html lang="fr">
+<head>
+    <title>sticky all demo test markPointPage</title>
+	<meta name="description" content="all demo test markPointPage" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="pml" />
+
+    <!--<meta name="robots" content="noindex" />-->
+
+    <script src="../../markPointPage.js" > </script>
+<script type="text/javascript">
+    "use strict"
+    try{ "".a = ""; console.log( "all demo test markPointPage","not in strict mode" ) } catch( e ){}
+    function bodyLoad(){
+//var details = document.createElement("details")
+//alert ( details.open === undefined ? "no details":"yes details" )
+//var divTest = document.createElement("div")
+//divTest.style.position = "sticky"
+//alert ( divTest.style.position == "sticky" ? "sticky":"no sticky" )
+        decodePmlCode()
+        breakLevel()
+        scrollCatch() //__:TODO: pb premier accès ...html#idName  
+        }
+    function decodePmlCode(){
+        var pmlCodes = document.getElementsByClassName("pmlCode_pml")
+        for (var index = 0; index < pmlCodes.length;index++){
+//if (index != 1) continue // 
+//if (index > 14) continue // 
+//    if (index >2) continue // 
+//if (index != 17) continue // 
+//if (index != 24) continue // 
+            var element = pmlCodes[index]
+//            var output = markPointPage (element.innerHTML)//.replace("&amp;","&").replace("&lt;","<").replace("&gt;",">")  )
+            var output = markPointPage (element.innerHTML.replace(/&amp;/g,"&"))//.replace("&lt;","<").replace("&gt;",">")  )
+            element.innerHTML = markPointPage (element.innerHTML.replace(/&amp;/g,"&"),"","hl").highlighting
+//            element.innerHTML = markPointPage (element.innerHTML,"","hl").highlighting
+            var divElement = document.createElement("div")
+            divElement.innerHTML = '<div class="viewHTMLTitle_pml" >Rendu HTML :</div>'
+            divElement.setAttribute("class","viewHTMLAll_pml") 
+            element.parentElement.appendChild(divElement) 
+            var divElement2 = document.createElement("div")
+            divElement2.setAttribute("class","viewHTML_pml") 
+            divElement2.innerHTML = output.output
+            divElement.appendChild(divElement2) 
+            }    
+        }
+    function scrollCatch(){
+        const vScroll = document.getElementsByClassName("vScrollMe_pml")[0]       
+        newVScroll( vScroll )
+        function newVScroll ( vScroll ){
+            const fixedMenu = vScroll.getElementsByClassName("fixedMenu_pml")[0]
+            const wrapAllPage = vScroll.getElementsByClassName("wrapAllPage_pml")[0] // scroll
+//            const allPage = vScroll.getElementsByClassName("allPage_pml")[0]
+            const patchMenuId = vScroll.getElementsByClassName("patchMenuId_pml")
+            const wrapMenu = vScroll.getElementsByClassName("wrapVScrollMenu_pml")[0]
+            wrapMenu.style.height = wrapMenu.offsetHeight
+            const Menu = vScroll.getElementsByClassName("vScrollMenu_pml")[0]
+//            const HomeVScroll = vScroll.getElementsByClassName("fullHomeVScroll_pml")[0]
+//            fixedMenu.addEventListener("scroll", fixedMenuScroll)
+            wrapAllPage.addEventListener("scroll", scroll)
+            window.addEventListener("resize", adapte)
+            //__:TODO: prévoir de conserver la position de lecture en cas de resize (au moins le derniers chapitre ou paragraphe lu __/...
+            var flgAdapte = true
+            scroll()
+            adapte()
+            document.getElementById(window.location.hash.substr(1)).scrollIntoView()
+            function adapte(){ //__:TODO: régler pb delta scroll 15px à droite
+                for ( let i = 0; i < patchMenuId.length; i++ ) { 
+                    patchMenuId[i].style.top = (-Menu.offsetHeight - 1) + "px"
+                    }
+                document.getElementById(window.location.hash.substr(1)).scrollIntoView()
+                }
+            function fixedMenuScroll(){console.log("fixed")}
+
+            function scroll( ){
+                console.log(wrapAllPage.scrollHeight)
+                return
+                if ( wrapAllPage.scrollTop >= wrapMenu.offsetTop && !fixedMenu.firstElementChild ) {
+//                    fixedMenu.appendChild(Menu)
+//                    if (flgAdapte)  {flgAdapte=false;wrapAllPage.scrollTop += -Menu.offsetHeight - fixedMenu.offsetHeight }
+//                    wrapAllPage.scrollTop -= Menu.offsetHeight
+                    for ( let i = 0; i < patchMenuId.length; i++ ) { 
+                        patchMenuId[i].style.top = (-Menu.offsetHeight - 1) + "px"
+                        }
+//                    document.getElementById(window.location.hash.substr(1)).scrollIntoView()
+                    }
+                if ( wrapAllPage.scrollTop < wrapMenu.offsetTop && fixedMenu.firstElementChild ) {
+//                    wrapMenu.appendChild(Menu)
+//                    flgAdapte = !true
+                    }
+                }
+            }
+        }
+    function breakLevel(){ // breakAction
+        const qView = document.getElementsByClassName("quickViewMotifs")[0]       
+        const viewMore = document.createElement("span")
+        viewMore.innerHTML = '<svg fill="currentcolor" width="24" height="24" viewBox="0 0 24 24">'
+            +'<path d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M5,3H19C20.11,3 21,3.89 21,5V12.8C20.39,12.45 19.72,12.2 19,12.08V5H5V19H12.08C12.2,19.72 12.45,20.39 12.8,21H5C3.89,21 3,20.11 3,19V5C3,3.89 3.89,3 5,3M7,7H17V9H7V7M7,11H17V12.08C16.15,12.22 15.37,12.54 14.68,13H7V11M7,15H12V17H7V15Z" />'
+            +'</svg>'
+        viewMore.style.float = "none"
+        viewMore.style.marginRight = ".5em"
+        const hideView = document.createElement("span") //__:1/0 __/...
+        hideView.innerHTML = "\u25C0" // "\u25BC"
+        const topBottom = document.createElement("span") //__:0 middle/1 /2 /3 full 
+        topBottom.innerHTML = "\u2B65"
+        topBottom.style.borderTop = "solid 2px currentcolor "
+        topBottom.style.borderBottom = "solid 2px currentcolor "
+//        topBottom.style.display = "inline-block"
+        topBottom.style.float = "left"
+        topBottom.style.width = "1em"
+        topBottom.style.whiteSpace  = "1px"
+        topBottom.style.lineHeight = "0.75em"
+        topBottom.style.marginTop = "2px"
+        const only = document.createElement("span") //__:1
+        only.innerHTML = "\u25C9" // "\u25BC"
+        only.style.float = "left"
+        only.style.marginLeft = ".5em"
+        const collapseExpand = document.createElement("span") //__:1/2
+        collapseExpand.innerHTML = "\u25A4\u2B65" //\u2B65" //\u2195"
+        collapseExpand.style.borderTop = "solid 2px currentcolor "
+        collapseExpand.style.borderBottom = "solid 2px currentcolor "
+        collapseExpand.style.whiteSpace  = "1px"
+        collapseExpand.style.lineHeight = "0.75em"
+        collapseExpand.style.padding = "2px"
+        const caption = qView.getElementsByTagName("caption")[0]
+        caption.insertBefore(viewMore.cloneNode(true),caption.firstChild)
+        caption.appendChild(collapseExpand.cloneNode(true))
+        caption.appendChild(hideView.cloneNode(true))
+        caption.addEventListener("click",captionClick)
+        const viewLevel = qView.querySelectorAll("tr[data-breaklevel]");
+        viewLevel.forEach(function(c) {
+            let breaklevel = c.dataset.breaklevel
+            if (breaklevel[0] == "0"){
+                c.firstElementChild.appendChild(collapseExpand.cloneNode(true)) 
+                c.firstElementChild.appendChild(topBottom.cloneNode(true)) 
+                c.firstElementChild.appendChild(only.cloneNode(true)) 
+                c.firstElementChild.appendChild(hideView.cloneNode(true)) 
+                c.addEventListener("click",groupInstClick)
+                c.dataset.breaklevel = "+" + breaklevel
+                return    
+                }
+            c.firstElementChild.appendChild(hideView.cloneNode(true)) 
+            c.addEventListener("click",typeInstClick)
+            c.dataset.breaklevel = "+" + breaklevel
+            });
+        function groupInstClick( evt ){
+            let lastElmTarget = evt.target.lastElementChild || evt.target.parentElement.lastElementChild
+            let nextTbody = evt.currentTarget.parentElement.nextElementSibling
+            if (lastElmTarget.innerHTML == "\u25C0") {lastElmTarget.innerHTML = "\u25BC"; nextTbody.style.display = "none"}
+            else  {lastElmTarget.innerHTML = "\u25C0"; nextTbody.style.display = ""}
+            }
+        function typeInstClick( evt ){
+            let lastElmTarget = evt.target.lastElementChild || evt.target.parentElement.lastElementChild
+            if (lastElmTarget.innerHTML == "\u25C0") {lastElmTarget.innerHTML = "\u25BC"; allThis(evt.currentTarget,true) }
+            else  {lastElmTarget.innerHTML = "\u25C0"; allThis(evt.currentTarget,false)}
+            }
+        function captionClick( evt ){
+            let lastElmTarget = evt.target.lastElementChild || evt.target.parentElement.lastElementChild
+            if (lastElmTarget.innerHTML == "\u25C0") {lastElmTarget.innerHTML = "\u25BC"; allNext(evt.currentTarget,true) }
+            else  {lastElmTarget.innerHTML = "\u25C0"; allNext(evt.currentTarget,false)}
+            }
+        function allNext( where, onOff ){//__:suivants __/...
+            while ( where = where.nextElementSibling ) { where.style.display = onOff? "none" :"" }
+            }
+        function allInnerNext( where, onOff ){//__:suivant __/...
+            }
+        function onlyAllThis( where, onOff ){
+            }
+        function allThis( where, onOff ){
+            let className = where.className
+            while ( (where = where.nextElementSibling) && where.className != className ){
+                where.style.display = onOff? "none" :""
+                }
+            }
+
+
+        }
+
+    </script>
+    
+<style type="text/css">
+html {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    widows: 100%;
+    }
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif; 
+    }
+    .sameLine_pml {
+        overflow: visible;   
+        white-space: nowrap;
+        }
+    .liNoBreak_pml>li {
+        overflow: visible;   
+        white-space: nowrap;
+        }
+    .noMP_pml {
+        margin: 0px !important;
+        padding: 0px  !important;
+        }
+    .MP_pml {
+        margin: 10px;
+        padding: 10px
+        }
+    .noSelect_pml {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -o-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        }
+    /*-inlineList-->*/
+    .inlineList_pml{
+        display: inline-block;
+        text-align: left;
+        padding: 0px;
+        margin: 0px;
+        }
+    .inlineList_pml>li {
+        list-style-type: none;
+        display: inline-block;
+        padding: 8px 12px 8px 12px;
+        margin: 0px;
+    }
+    .noListStyle_pml>li {
+        list-style-type: none;
+        padding: 4px 6px 4px 6px;
+        padding-inline-start: 0 ; 
+        margin: 0px;
+        }
+    .hideInput_pml input {
+        position: absolute; 
+        overflow: hidden; 
+        clip: rect(0 0 0 0); 
+        height:1px; 
+        width:1px; 
+        margin:-1px; 
+        padding:0;
+        border:0;
+        }
+/************************************/
+    .vScrollMe_pml{
+        height: 100%;relative
+        width: 100%;
+        overflow-y: hidden;
+        overflow-x: hidden; 
+        }
+    .wrapAllPage_pml{
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: auto; 
+        }
+    .allPage_pml{
+        width: 100%;
+        padding-left: -15px;
+        overflow-y: visible;
+        overflow-x: visible; 
+        }
+        
+/**/
+    .fixedMenu_pml{
+        position:absolute;
+        top: 0px;
+        width: calc(100% - 15px);
+/*        margin-left: -8px;
+*/        z-index: 1000;
+        /*background-color:burlywood*/
+        }
+/**/
+    .fullHomeVScroll_pml{
+        border-bottom: 2px  solid  rgba(214, 214, 214);
+        border-top: 2px  solid  rgb(214, 214, 214);
+        background-color: rgba(211, 211, 211, 0.342);
+        color: white;
+        text-align: center;
+        }
+    .fullHomeVScroll_pml button{
+        margin-top: 3px;
+        border: 1px  solid rgb(169, 169, 169);
+        border-top: 4px  solid rgb(121, 121, 121);
+        border-bottom: 4px  solid rgb(121, 121, 121);
+        /*border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;*/
+        }  
+    .homeVScroll_pml{
+        background-color:  rgba(255, 255, 255, 0.575);
+        /*border-bottom: 2px  solid  rgb(214, 214, 214);
+        border-top: 2px  solid  rgb(214, 214, 214);
+        border-left: 2px  solid  rgb(214, 214, 214);
+        border-right: 2px  solid  rgb(214, 214, 214);
+        border-radius: 6px;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;*/
+        display: inline-block;
+        text-align:left;
+        min-width: 35em;
+        max-width: 90em;
+        color:black;
+        }
+/**/
+    .wrapVScrollMenu_pml{
+        position: sticky;
+        top: 0px;
+        z-index:1000;
+        }
+    .vScrollMenu_pml { 
+        overflow-y: visible;
+        overflow-x: visible; 
+        text-align: center;
+/*        overflow-y:hidden;*/
+        font-size:24px;
+        background-color: rgb(241, 214, 58);
+        width: 100%;
+        display: inline-block;
+        }
+    .shortMenu_pml{
+        display: inline-block;
+        margin-top:2px;
+        }
+    .shortMenu_pml button {
+        border: 1px  solid rgb(169, 169, 169);
+        border-top: 4px  solid rgb(121, 121, 121);
+        border-bottom: 4px  solid rgb(121, 121, 121);
+        /*border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;*/
+        }    
+    .shortMenu_pml button:hover {
+        background-color: white;
+        border-color: rgb(252, 134, 87);
+        }
+    .liButton{
+        height:24px;
+        }
+    .mainSites_pml{
+        display: inline-block;
+        float:right;
+        }
+    .menuText{
+        margin-right: .5em;
+        display: inline-block;
+        white-space: normal;
+        text-align: center;
+        }
+    .menuText li {
+        white-space: nowrap;
+        padding: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        border-right: 1px  solid rgb(240, 238, 238);
+        border-left: 1px  solid  rgb(240, 238, 238);
+        /*background-color:rgb(248, 236, 170);*/
+        }
+    .menuText a {
+        /*color:rgb(248, 248, 248);*/
+        text-align: center;
+        color:rgb(0, 0, 0);
+        color:rgb(0, 0, 238);
+        text-decoration: none;
+        text-decoration-color:rgb(216, 63, 93);
+        padding: 1px 4px 1px 4px;
+        /*border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;*/
+        }
+    .menuText a:hover {
+        border-bottom: 8px  solid  rgba(221, 76, 76, 0.63);
+        /*background-color: rgba(187, 75, 97, 0.637);*/
+        /*border: 2px  solid darkgray;*/
+        }
+/*******************************/
+    .wrapViewDemo{
+        width:100%;
+        }
+    .viewDemo_pml{
+/*        margin-left: 300px; */
+        overflow-y: visible;
+        overflow-x: visible; 
+        margin-left: 4px;
+        margin-right: 4px;
+        display: block;
+        text-align: center;
+        overflow : auto ; 
+                
+        }
+    .viewDemo_pml >div{
+        display: inline-block;
+        text-align: left;
+        }
+    .pmlCode_pml {
+        display: inline-block;
+        overflow-x: visible; 
+        min-width: 40em;
+        min-height: 2em;
+        }
+    .typeInstr_pml{
+        position:sticky;
+        top:0px;
+        font-weight: bold;  
+        font-size: 24px;
+        text-align: center;
+        /*border: 2px  solid  rgb(219, 219, 219);*/
+        background-color: rgb(241, 214, 58);
+        color:slategray;        }
+    
+    .patchMenuId_pml{
+        /*float: left;*/
+        /*top: 0em;*/
+        visibility:hidden;
+        position:absolute;
+        background-color: blueviolet;
+        }
+    .hxViewDemo_pml{
+        background-color:  rgb(241, 214, 58);
+        display:block;
+        color:rgb(104, 104, 104);
+        border: 2px  solid rgb(248, 236, 170);
+        }
+    .hxViewDemo_pml span{
+        color:lightseagreen;
+        background-color: rgb(82, 82, 82);
+        border: 1px  solid  rgb(238, 206, 25);
+        }
+    .known_MHL {
+        font-weight: bold;    
+        color: rgb(216, 63, 93);
+        margin-right: 2px;
+        }
+    .unknown_MHL{
+        border: 1px  solid gold;
+        }
+    .codeCmt_MHL{
+        font-weight: bold;    
+        color: rgb(145, 199, 100);
+        margin-right: 2px;
+        }
+
+    .viewHTMLAll_pml {
+        display: inline-block;
+        margin-left: 0px;
+        padding-left: 0.25em;
+        border-left: 4px  solid rgb(241, 214, 58);
+        }
+    .viewHTMLTitle_pml {
+        background-color:  rgb(241, 214, 58);
+        border: 2px  solid rgb(248, 236, 170);
+        }
+    .viewHTML_pml {
+        display: inline-block;
+        overflow-x: visible; 
+        margin-left: 0.5em;
+        margin-bottom: 0px;
+        width: 35em;
+        padding-left: 1em;
+        border-left: 4px  solid rgb(248, 236, 170);
+        border-right: 4px  solid rgb(248, 236, 170);
+        }
+    .viewHTML_pml code {
+        border: 1px  solid lavender;
+        }
+    .viewHTML_pml pre {
+        border: 1px  solid gainsboro;
+        }
+    .viewHTML_pml iframe {
+        border: 1px  solid lightcyan;
+        }
+    .viewHTML_pml a {
+        border: 1px  solid deepskyblue;
+        }
+    .viewHTML_pml div {
+        border: 1px  solid lightgreen;
+        }
+    .viewHTML_pml span {
+        border: 1px  solid lightpink;
+        }
+
+    .viewHTML_pml ,h1, h2, h3, h4, h5, h6 {
+/*        margin-block-start: 0.25em;
+        margin-block-end: 0.25em;
+*/        margin: 0.25em;
+        margin: 0.25em;
+        }
+    .quickViewMotifs{
+        border: 3px solid blueviolet;
+        border: 2px solid rgb(241, 214, 58);
+        background-color: rgb(82, 82, 82);
+        vertical-align:top;
+        }
+    .quickViewMotifs caption ,.groupInst{
+        border: 2px solid rgb(241, 214, 58);
+        background-color: lightseagreen;
+        background-color: rgb(82, 82, 82);
+        text-align:center;
+        color: seashell;
+        font-weight: bold;  
+        font-size: 18px;
+        min-width: 19em;
+        }
+    .quickViewMotifs >caption span{
+        float: right;
+        margin-right: .3em;
+        }
+    .quickViewMotifs thead>tr>th {
+        position:sticky;
+        top:0px;
+        color: rgb(209, 87, 112); 
+        background-color: rgb(241, 214, 58);
+        background-color: rgb(82, 82, 82);
+        }
+    .quickViewMotifs tfoot>tr>th {
+        position:sticky;
+        bottom:0px;
+        color: rgb(209, 87, 112); 
+        background-color: rgb(241, 214, 58);
+        background-color: rgb(82, 82, 82);
+        }
+    .quickViewMotifs thead , tfoot{
+        text-align:center;
+        font-weight: normal;
+        color: rgb(209, 87, 112); 
+        border: 1px solid rgb(241, 214, 58);
+        }
+    .quickViewMotifs tbody{
+        color:rgb(241, 223, 58);
+        font-weight: bold;  
+        }
+    .quickViewMotifs tbody > td {
+        border:0px;
+        margin: 0px;
+        }
+    .quickViewMotifs .groupInst>th{
+        position:sticky;
+        top:1.20em;
+        color: black;
+        border: 2px solid rgb(241, 214, 58);
+        background-color: rgb(82, 82, 82);
+        background-color: lightseagreen;
+        background-color: white;
+        font-size: 16px;
+        }
+    .quickViewMotifs .groupInst span {
+        float: right;
+        margin-right: .3em;
+        }
+    .quickViewMotifs .typeInst>th {
+        position:sticky;
+        top:2.75em;
+        text-align:left;
+        background-color: rgb(241, 214, 58);
+        color:slategray;
+        }
+    .quickViewMotifs .separator {
+        background-color: rgb(241, 214, 58);
+        color:slategray;
+        text-align: left;
+        }
+    .tdStart {
+        border-right: 1px solid lightgrey;
+        }
+    .tdStart >span{
+        color:rgb(211, 136, 37);
+        font-weight: normal;
+        margin-left: 2px;  
+        margin-right: 2px;  
+        }
+    .tdStart + td >span{
+        color:rgb(211, 136, 37);
+        font-weight: normal;
+        margin-left: 2px;  
+        margin-right: 2px;  
+        }
+    .typeInst > th > span{
+        color: darkslategray;
+        float: right;
+        margin-right: .3em;
+        }
+    .quickViewMotifs .tdStart {
+        text-align: right;
+        font-family: monospace, Verdana, Geneva, Tahoma, sans-serif;
+        }
+    .quickViewMotifs .tdStart + td {
+        text-align: left;
+        font-family: monospace, Verdana, Geneva, Tahoma, sans-serif;
+        }
+    .quickViewMotifs .tdStart + td + td {
+        color: lightseagreen;
+        text-align: left;
+        }
+    .quickViewMotifs .memo {
+        color: rgb(209, 87, 112);
+        margin-left: .5em;
+        float: none !important;
+        }
+    .quickViewCol1, .quickViewCol2{
+        background-color: rgb(41, 41, 41);
+        /*visibility :collapse ;*/
+        }
+    
+    .quickViewCol3{
+        background-color: rgb(105, 54, 11);
+        }
+    .quickViewCol123{
+        background-color: rgb(105, 54, 11);
+        }
+</style>
+</head>
+
+<body onload="bodyLoad()" >
+<div class= "vScrollMe_pml">
+        <div class="fixedMenu_pml">
+        </div><!--Fin fixedMenu-->
+        
+<div class="wrapAllPage_pml" >
+<div class="allPage_pml" >
+    <div id="Home" class="fullHomeVScroll_pml">
+        <div style="display:inline-block">
+            <div class="homeVScroll_pml">
+        <h2 style="text-align: center">Langage markPointPage référence utilisateur</h2>
+
+        <div style="float: left; display:inline-block;">
+            <svg title="markPointPage on github" style="background-color: white; margin-left: .5em; margin-right: -.8em; margin-bottom:3.7em; border-bottom: 3px  solid rgb(209, 87, 112); border-left: 3px  solid rgb(241, 214, 58); border-right: 3px  solid rgb(82, 82, 82); border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;" width="24" height="24" viewBox="0 0 360 360">
+                <g transform="translate(0.000000,360.000000) scale(0.100000,-0.100000)"
+                fill="#20B2AA" fill="#000000" fill="#DA5770" stroke="none">
+                <path d="M1540 3543 c-112 -17 -182 -34 -310 -74 -98 -31 -104 -33 -230 -94 -78 -37 -87 -42 -158 -87 -24 -16 -45 -28 -48 -28 -18 0 -186 -140 -275 -229 -89 -89 -229 -257 -229 -275 0 -3 -12 -24 -27 -48 -46 -71 -51 -80 -88 -158 -20 -41 -41 -83 -46 -93 -11 -20 -71 -202 -88 -267 -27 -102 -35 -206 -35 -430 0 -129 3 -260 7 -290 12 -86 72 -306 89 -324 4 -6 8 -18 8 -27 0 -10 7 -30 15 -46 8 -15 30 -62 50 -103 20 -41 45 -88 56 -105 10 -16 23 -39 29 -50 59 -117 284 -369 425 -476 64 -49 141 -101 165 -112 8 -4 29 -16 45 -27 39 -24 135 -71 205 -100 30 -12 70 -28 88 -36 47 -20 88 -17 122 8 l30 22 0 182
+                c0 116 -4 185 -10 189 -6 4 -51 1 -100 -6 -148 -20 -273 7 -375 82 -65 47 -77 61 -115 139 -18 36 -36 72 -41 80 -5 8 -12 22 -16 30 -20 47 -84 115 -157 170 -67 49 -73 78 -19 94 38 10 153 -12 160 -31 3 -7 11 -13 19 -13 19 0 144 -126 144 -145 0 -22 124 -143 156 -151 15 -4 39 -13 53 -20 36 -19 172 -18 218 1 19 8 44 15 54 15 21 0 44 39 54 90 4 19 17 53 31 75 31 52 46 87 40 93 -3 2 -33 8 -68 12 -70 8 -142 25 -203 47 -254 95 -359 195 -469 446 -9 21 -16 48 -16 60 0 12 -7 45 -15 72 -23 75 -24 363 -1 436 34 108 79 196 137 268 25 31 26 36 14 65 -19 47 -27 171 -15 256 10 78 31 164 42 176 4 4 36 6 70 5 69 -1
+                114 -15 238 -71 37 -17 108 -57 144 -82 45 -32 55 -33 116 -14 187 59 571 60 761 0 26 -8 52 -14 58 -14 6 0 56 27 111 60 55 33 104 60 111 60 6 0 23 6 37 14 55 29 119 46 180 47 34 1 66 -1 70 -5 12 -13 33 -100 42 -181 11 -90 4 -204 -15 -251 -12 -29 -11 -34 14 -65 58 -72 103 -160 137 -268 22 -72 22 -361 -1 -436 -8 -27 -15 -60 -15 -72 0 -44 -76 -197 -135 -273 -67 -85 -132 -136 -243 -189 -83 -40 -258 -91 -318 -92 -21 0 -47 -4 -57 -8 -17 -6 -17 -9 5 -41 80 -121 88 -167 88 -526 l0 -310 30 -22 c34 -25 75 -28 122 -8 18 8 58 24 88 36 70 29 166 76 205 100 17 11 39 24 50 30 172 87 498 413 585 585 6 11
+                19 34 30 50 10 17 35 64 55 105 20 41 43 88 51 103 7 16 14 36 14 46 0 9 4 21 8 27 8 8 19 42 66 205 9 31 16 73 17 95 1 52 13 90 27 86 9 -1 12 59 12 228 0 169 -3 229 -12 228 -14 -4 -26 34 -27 86 -1 22 -8 64 -17 95 -30 109 -78 256 -90 281 -7 14 -29 59 -49 100 -37 78 -42 87 -87 158 -16 24 -28 45 -28 48 0 18 -140 186 -229 275 -89 89 -257 229 -275 229 -3 0 -24 12 -48 28 -72 46 -119 70 -263 137 -37 18 -200 69 -280 89 -188 46 -465 58 -655 29z" />
+                <path d="M627 1004 c-9 -10 2 -24 19 -24 8 0 14 7 14 15 0 15 -21 21 -33 9z"/>
+                <path d="M712 918 c5 -32 28 -35 28 -4 0 17 -5 26 -16 26 -10 0 -14 -7 -12 -22z"/>
+                <path d="M772 828 c2 -15 11 -24 26 -26 24 -4 30 16 10 36 -20 20 -40 14 -36 -10z"/>
+                <path d="M863 734 c-8 -22 4 -44 26 -44 24 0 33 13 25 33 -8 21 -44 29 -51 11z"/>
+                <path d="M982 648 c2 -17 11 -24 31 -26 15 -2 27 1 27 7 0 25 -14 41 -37 41 -20 0 -24 -4 -21 -22z"/>
+                <path d="M1270 650 c-22 -16 -23 -20 -8 -25 43 -17 88 13 51 34 -14 7 -25 5 -43 -9z"/>
+                <path d="M1134 635 c-8 -21 2 -45 19 -45 20 0 40 27 33 45 -7 19 -45 20 -52 0z"/>
+                </g>
+                </svg>
+            <div style="margin-top: 0px; margin-right: .5em; font-family: Arial, Helvetica, sans-serif; font-margin-right: .5em;padding-top: 3px; padding-right:2px; background-color:rgb(82, 82, 82); display:inline-block; border: 3px  solid rgb(241, 214, 58); border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;">
+            <span style="font-weight: bold; color:rgb(209, 87, 112); padding-left: 5px;display:inline-block; text-align: center;line-height: 0.80em">m<br>a<br>r<br>k</span>
+            <span style="position: relative; display:inline-block; color:lightseagreen; top: -8px; font-size: 47px; line-height: 0.80em ">!"_;</span>
+            <div style="font-weight: bold; color:rgb(209, 87, 112); padding-left: 7px; padding-bottom:7px; letter-spacing: .07em;">PointPage</div>     
+        </div>
+        </div>
+        <div style="float: right; display:inline-block;">
+            <svg title="pointMarkup on github" style="background-color: white; margin-left: .5em; margin-right: -1.3em; margin-bottom:3.7em; border-bottom: 3px  solid rgb(209, 87, 112); border-left: 3px  solid rgb(241, 214, 58); border-right: 3px  solid rgb(82, 82, 82); border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;" width="24" height="24" viewBox="0 0 360 360">
+                <g transform="translate(0.000000,360.000000) scale(0.100000,-0.100000)"
+                fill="#20B2AA" fill="#000000" fill="#DA5770" stroke="none">
+                <path d="M1540 3543 c-112 -17 -182 -34 -310 -74 -98 -31 -104 -33 -230 -94 -78 -37 -87 -42 -158 -87 -24 -16 -45 -28 -48 -28 -18 0 -186 -140 -275 -229 -89 -89 -229 -257 -229 -275 0 -3 -12 -24 -27 -48 -46 -71 -51 -80 -88 -158 -20 -41 -41 -83 -46 -93 -11 -20 -71 -202 -88 -267 -27 -102 -35 -206 -35 -430 0 -129 3 -260 7 -290 12 -86 72 -306 89 -324 4 -6 8 -18 8 -27 0 -10 7 -30 15 -46 8 -15 30 -62 50 -103 20 -41 45 -88 56 -105 10 -16 23 -39 29 -50 59 -117 284 -369 425 -476 64 -49 141 -101 165 -112 8 -4 29 -16 45 -27 39 -24 135 -71 205 -100 30 -12 70 -28 88 -36 47 -20 88 -17 122 8 l30 22 0 182
+                c0 116 -4 185 -10 189 -6 4 -51 1 -100 -6 -148 -20 -273 7 -375 82 -65 47 -77 61 -115 139 -18 36 -36 72 -41 80 -5 8 -12 22 -16 30 -20 47 -84 115 -157 170 -67 49 -73 78 -19 94 38 10 153 -12 160 -31 3 -7 11 -13 19 -13 19 0 144 -126 144 -145 0 -22 124 -143 156 -151 15 -4 39 -13 53 -20 36 -19 172 -18 218 1 19 8 44 15 54 15 21 0 44 39 54 90 4 19 17 53 31 75 31 52 46 87 40 93 -3 2 -33 8 -68 12 -70 8 -142 25 -203 47 -254 95 -359 195 -469 446 -9 21 -16 48 -16 60 0 12 -7 45 -15 72 -23 75 -24 363 -1 436 34 108 79 196 137 268 25 31 26 36 14 65 -19 47 -27 171 -15 256 10 78 31 164 42 176 4 4 36 6 70 5 69 -1
+                114 -15 238 -71 37 -17 108 -57 144 -82 45 -32 55 -33 116 -14 187 59 571 60 761 0 26 -8 52 -14 58 -14 6 0 56 27 111 60 55 33 104 60 111 60 6 0 23 6 37 14 55 29 119 46 180 47 34 1 66 -1 70 -5 12 -13 33 -100 42 -181 11 -90 4 -204 -15 -251 -12 -29 -11 -34 14 -65 58 -72 103 -160 137 -268 22 -72 22 -361 -1 -436 -8 -27 -15 -60 -15 -72 0 -44 -76 -197 -135 -273 -67 -85 -132 -136 -243 -189 -83 -40 -258 -91 -318 -92 -21 0 -47 -4 -57 -8 -17 -6 -17 -9 5 -41 80 -121 88 -167 88 -526 l0 -310 30 -22 c34 -25 75 -28 122 -8 18 8 58 24 88 36 70 29 166 76 205 100 17 11 39 24 50 30 172 87 498 413 585 585 6 11
+                19 34 30 50 10 17 35 64 55 105 20 41 43 88 51 103 7 16 14 36 14 46 0 9 4 21 8 27 8 8 19 42 66 205 9 31 16 73 17 95 1 52 13 90 27 86 9 -1 12 59 12 228 0 169 -3 229 -12 228 -14 -4 -26 34 -27 86 -1 22 -8 64 -17 95 -30 109 -78 256 -90 281 -7 14 -29 59 -49 100 -37 78 -42 87 -87 158 -16 24 -28 45 -28 48 0 18 -140 186 -229 275 -89 89 -257 229 -275 229 -3 0 -24 12 -48 28 -72 46 -119 70 -263 137 -37 18 -200 69 -280 89 -188 46 -465 58 -655 29z" />
+                <path d="M627 1004 c-9 -10 2 -24 19 -24 8 0 14 7 14 15 0 15 -21 21 -33 9z"/>
+                <path d="M712 918 c5 -32 28 -35 28 -4 0 17 -5 26 -16 26 -10 0 -14 -7 -12 -22z"/>
+                <path d="M772 828 c2 -15 11 -24 26 -26 24 -4 30 16 10 36 -20 20 -40 14 -36 -10z"/>
+                <path d="M863 734 c-8 -22 4 -44 26 -44 24 0 33 13 25 33 -8 21 -44 29 -51 11z"/>
+                <path d="M982 648 c2 -17 11 -24 31 -26 15 -2 27 1 27 7 0 25 -14 41 -37 41 -20 0 -24 -4 -21 -22z"/>
+                <path d="M1270 650 c-22 -16 -23 -20 -8 -25 43 -17 88 13 51 34 -14 7 -25 5 -43 -9z"/>
+                <path d="M1134 635 c-8 -21 2 -45 19 -45 20 0 40 27 33 45 -7 19 -45 20 -52 0z"/>
+                </g>
+                </svg>
+        <div style="margin: .5em; font-family: Arial, Helvetica, sans-serif;background-color:rgb(82, 82, 82); display:inline-block; border: 3px  solid rgb(241, 214, 58); border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;">
+            <span style="font-weight: bold; color:rgb(209, 87, 112); padding-left: 6px; display:inline-block; text-align: center;line-height: 0.75em">P<br>o<br>i<br>n<br>t<br></span>
+            <span style="display:inline-block;">
+                <div style="color:lightseagreen; padding-left:2px; font-size: 47px;">!:_;</div>
+                <div style="font-weight: bold; color:rgb(209, 87, 112); padding-left: 2px; padding-bottom:7px; letter-spacing: .2em;">Markup</div>     
+            </span>
+        </div>
+        </div>
+        
+        Langage d'instructions embarquées compatible avec la base de la syntaxe d'un pointMarkup. Il se limite à un balisages linéaires de mises en formes d'un texte avec hyperlien, étiquette, liste, tableau, image et médiat sans aucune validation html ou autres.
+        A cela il à été inclus des composants d'utilisation courante. <br><br><br>
+
+<table class="quickViewMotifs">
+    <!-- style tr:nth-child(odd ou even){ style ligne impaire ou paire -->
+    <caption>Quick view motifs</caption>
+    <colgroup class="quickViewCol1" >
+        <col span="2" >
+    </colgroup>
+    <colgroup >
+        <col class="quickViewCol3">
+    </colgroup>
+    <thead>
+        <tr><th>target</th><th>x property</th><th>instruction</th></tr>
+    </thead>
+    <tfoot>
+        <tr><th>target</th><th>x property</th><th>instruction</th></tr>
+    </tfoot>
+    <tbody>
+        <tr class="groupInst" data-breaklevel="01" ><th colspan="3" >text <span class="memo">"</span></th></tr>
+    </tbody>
+    <tbody>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" >flux</th></tr>
+        <tr><td class="tdStart">"-<span>[</span>"<span>]</span></td><td></td><td>span [inline-block]</td></tr>
+        <tr><td class="tdStart">""<span>[</span>-<span>]</span></td><td></td><td>div [inline-block]</td></tr>
+        <tr><td class="tdStart">"="<span>[</span>-<span>]</span></td><td></td><td>pre  [inline-block]</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" >split</th></tr>
+        <tr><td class="tdStart">"</td><td><span>nbr</span>"<span>[</span>=<span>]</span><span>[</span>.<span>]</span></td><td>title [autoBr][center]</td></tr>
+        <tr><td class="tdStart">"---</td><td><span>[nbr]</span></td><td>horizontale line [thickness]</td></tr>
+        <tr><td class="tdStart">"-<span>[</span>-<span>]</span></td><td><span>[</span>%<span>|</span>?<span>]</span></td><td>tiret | tiret conditional</td></tr>
+        <tr><td class="tdStart">"*<span>[</span>=<span>]</span></td><td></td><td>paragraphe [autoBr]</td></tr>
+        <tr><td class="tdStart">"*-<span>[</span>=<span>]</span></td><td></td><td>paragraphe indent [autoBr]</td></tr>
+        <tr><td class="tdStart">"=<span>[</span>=<span>[</span>=<span>]]</span></td><td></td><td>break line 1[2 or 3]</td></tr>
+        <tr><td class="tdStart">"/<span>[</span>/<span>]</span></td><td></td><td>html comment line [block]</td></tr>
+<!-- non gagne trop peude caractère         <tr><td class="tdStart" colspan="2"><span style="display:block; text-align: center;">mixed</span></td><td></td></tr>
+        <tr><td class="tdStart">"-<span>[</span>-<span>]</span>*<span>[</span>=<span>]</span></td><td></td><td>tiret paragraphe [autoBr]</td></tr>
+        <tr><td class="tdStart">"=-<span>[</span>-<span>]</span></td><td></td><td>break line + tiret</td></tr>
+-->
+
+        <tr class="typeInst" data-breaklevel="2"><th colspan="3" >format</th></tr>
+        <tr><td class="tdStart">"_</td><td><span>[</span>"<span>]</span></td><td>span unbreakable [immediate]</td></tr>
+        <tr><td class="tdStart">""_</td><td></td><td>div unbreakable </td></tr>
+        <tr><td class="tdStart">"</td><td><span>codeNbr</span>%</td><td>char code</td></tr>
+        <tr><td class="tdStart">"</td><td><span>xhexCode</span>%</td><td>hexa char code</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>[x|Nbr]</span>"<span>[</span>=<span>]</span></td><td>default or Nbr predefined <br>span style [autoBr]</td></tr>
+        <tr><td class="tdStart"></td><td><span>[x|Nbr]</span>""<span>[</span>=<span>]</span></td><td>default or Nbr predefined <br>div style [autoBr]</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>s</span>"</td><td>strong</td></tr>
+        <tr><td class="tdStart"></td><td><span>e</span>"</td><td>emphase</td></tr>
+        <tr><td class="tdStart"></td><td><span>i</span>"</td><td>italique</td></tr>
+        <tr><td class="tdStart"></td><td><span>b</span>"</td><td>bold</td></tr>
+        <tr><td class="tdStart"></td><td><span>m</span>"</td><td>mark</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>u</span>"</td><td>underline</td></tr>
+        <tr><td class="tdStart"></td><td><span>o</span>"</td><td>obsolete</td></tr>
+        <tr><td class="tdStart"></td><td><span>del</span>"</td><td>delete</td></tr>
+        <tr><td class="tdStart"></td><td><span>ins</span>"</td><td>insert</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>c</span>"<span>[</span>"<span>]</span></td><td>code [block]</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>q</span>"</td><td>quote</td></tr>
+        <tr><td class="tdStart"></td><td><span>q</span>""</td><td>blockquote</td></tr>
+        <tr><td class="tdStart"></td><td><span>r</span>"</td><td>short cite</td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart"></td><td><span>d</span>"</td><td>definition</td></tr>
+        <tr><td class="tdStart"></td><td><span>a</span>"</td><td>abbreviation</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" >action</th></tr>
+        <tr><td class="tdStart"></td><td><span>l</span>"<span>[</span>"<span>]{&lt;link&gt;}</span></td><td>link [block]</td></tr>
+        <tr><td class="tdStart"></td><td><span>v[=open]</span>"<span>[</span>"<span>] [&lt;summary&gt;</span>!;:<span>]</span></td><td>details [block]</td></tr>
+<!--        <tr><td class="tdStart"></td><td><span>v[,:]</span>"<span>[</span>"<span>] [&lt;summary&gt;</span>!;:<span>]</span></td><td>details/summary [,: open]</td></tr>-->
+    </tbody>
+    <tbody>
+        <tr class="groupInst" data-breaklevel="01" ><th colspan="3" >one level list <span class="memo">*</span></th></tr>
+    </tbody>
+    <tbody>
+<!--        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">Generic</th></tr>-->
+        <tr><td class="tdStart" colspan="3"><span style="display:block; text-align: center;">generic</span></td><td></td></tr>
+        <tr><td class="tdStart">**<span>&lt;</span></td><td><span>type&gt;</span></td><td>entrée root liste</td></tr>
+        <tr><td class="tdStart">*<span>&lt;</span></td><td><span>type&gt;</span></td><td>entrée élément liste</td></tr>
+        <tr><td class="tdStart">*</td><td></td><td>élément de liste</td></tr>
+        <tr><td class="tdStart">*_</td><td></td><td>dernier élément de liste</td></tr>
+        <tr><td class="tdStart">*</td><td><span>,</span></td><td>continuer dernier élément</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator"> liste à puces <span class="memo">.</span></th></tr>
+        <tr><td class="tdStart">*</td><td><span>[:|n]</span></td><td>default | none</td></tr>
+        <tr><td class="tdStart">*</td><td><span>h[-]</span></td><td>horizontale-none [center] </td></tr>
+        <tr><td class="tdStart">*</td><td><span>[s|c]</span></td><td>square | circle | </td></tr>
+        <tr><td class="tdStart">*</td><td><span>[d|t]</span></td><td>disk | triangle</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator"> liste ordonnée <span class="memo">x</span></th></tr>
+        <tr><td class="tdStart">*</td><td><span>[x|g]</span></td><td>default | grec</td></tr>
+        <tr><td class="tdStart">*</td><td><span>[1|0]</span></td><td>decimal | decimal leading 0</td></tr>
+        <tr><td class="tdStart">*</td><td><span>[i|I]</span></td><td>romain | romain majuscule</td></tr>
+        <tr><td class="tdStart">*</td><td><span>[a|A]</span></td><td>alpha | alpha majuscule</td></tr>
+        <tr><td class="tdStart" colspan="2"><span style="display:block; text-align: center;"> start exemple</span></td><td></td></tr>
+        <tr><td class="tdStart">*</td><td><span>1-3</span></td><td>start at 3</td></tr>
+<!--        <tr><td class="tdStart">*</td><td><span>A-D</span></td><td>start at D</td></tr>-->
+        <tr><td class="tdStart">*</td><td><span>A-4</span></td><td>start at D</td></tr>
+<!--        <tr><td class="tdStart">*</td><td><span>I-VI</span></td><td>start at VI</td></tr>-->
+        <tr><td class="tdStart">*</td><td><span>I-6</span></td><td>start at VI</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator"> datalist <span class="memo">o</span></th></tr>
+        <tr><td class="tdStart">*</td><td><span>o</span></td><td>datalist option</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator"> other</th></tr>
+        <tr><td class="tdStart">*</td><td><span>l[</span>.<span>|</span>"<span>|</span>""<span>]{&lt;link&gt;}</span></td><td>link list in none | span | div</td></tr>
+        <tr><td class="tdStart">*</td><td><span>v[,:][</span>.<span>|</span>"<span>|</span>""<span>] [&lt;summary&gt;</span>!;:<span>]</span></td><td>details list in none | span | div</td></tr>
+    </tbody>
+    <tbody>
+        <tr class="groupInst" data-breaklevel="01" ><th colspan="3" >two level list <span class="memo">*</span></th></tr>
+    </tbody>
+    <tbody>
+<!--        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">generic</th></tr>-->
+        <tr><td class="tdStart" colspan="3"><span style="display:block; text-align: center;">generic</span></td><td></td></tr>
+        <tr><td class="tdStart">***<span>&lt;</span></td><td><span>type&gt;</span></td><td>entrée root liste</td></tr>
+        <tr><td class="tdStart">**<span>&lt;</span></td><td><span>type&gt;</span></td><td>entrée level 1</td></tr>
+        <tr><td class="tdStart">**<span>&lt;</span></td><td><span>type&gt;</span></td><td>entrée level 2</td></tr>
+        <tr><td class="tdStart">**</td><td></td><td>élément level 1</td></tr>
+        <tr><td class="tdStart">*</td><td></td><td>élément level 2</td></tr>
+        <tr><td class="tdStart">*_</td><td></td><td>dernier élément de liste</td></tr>
+        <tr><td class="tdStart">*</td><td><span>,</span></td><td>continuer dernier level 2</td></tr>
+        <tr><td class="tdStart">**</td><td><span>,</span></td><td>continuer dernier level 1</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">liste de définition <span class="memo">:</span></th></tr>
+        <tr><td class="tdStart">***</td><td><span>::</span></td><td>enter dl</td></tr>
+        <tr><td class="tdStart">**</td><td><span>::</span></td><td>enter first terme</td></tr>
+        <tr><td class="tdStart">**</td><td></td><td>level 1 : terme</td></tr>
+        <tr><td class="tdStart">*</td><td></td><td>level 2 : definition</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">select <span class="memo">&</span></th></tr>
+        <tr><td class="tdStart">**</td><td><span>&[:][</span>=<span>]</span></td><td>enter first group</td></tr>
+        <tr><td class="tdStart">*</td><td><span>&[:][</span>=<span>]</span></td><td>enter first option</td></tr>
+        <tr><td class="tdStart">**</td><td></td><td>level 1 : group</td></tr>
+        <tr><td class="tdStart">*</td><td></td><td>level 2 : option</td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">multi select <span class="memo">&&</span></th></tr>
+        <tr><td class="tdStart">**</td><td><span>&&[:][</span>=<span>]</span></td><td>enter first group</td></tr>
+        <tr><td class="tdStart">*</td><td><span>&&[:][</span>=<span>]</span></td><td>enter first option</td></tr>
+        <tr><td class="tdStart">**</td><td></td><td>level 1 : group</td></tr>
+        <tr><td class="tdStart">*</td><td></td><td>level 2 : option</td></tr>
+    </tbody>
+    <tbody>
+        <tr class="groupInst" data-breaklevel="01" ><th colspan="3" >table list <span class="memo">*</span> </th></tr>
+    </tbody>
+    <tbody>
+        <tr><td class="tdStart" colspan="3"><span style="display:block; text-align: center;">common</span></td><td></td></tr>
+        <tr><td class="tdStart">**<span>[</span>#<span>]</span><span>[</span>_<span>]</span></td><td><span>[,&lt;spanCode&gt;]</span></td><td>new line first cell</td></tr>
+        <tr><td class="tdStart">*<span>[</span>#<span>]</span><span>[</span>_<span>]</span></td><td><span>[,&lt;spanCode&gt;]</span></td><td>next cell</td></tr>
+        <tr><td class="tdStart" colspan="2"><span style="display:block; text-align: center;">&lt;spanCode&gt;</span><span>[c|cg|r|rg][&lt;colspanNbr&gt][/&lt;rowspanNbr&gt]</span></td><td><span>attributs<br>[c|cg|r|rg] scope &lt;th&gt;</span> </td></tr>
+        <tr><td class="tdStart" colspan="2"><span>[</span>#<span>]</span></td><td><span> header cell</span> </td></tr>
+        <tr><td class="tdStart" colspan="2"><span>[</span>_<span>]</span></td><td><span> last cell of rowcol</span> </td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">simple rowcol</th></tr>
+        <tr><td class="tdStart">**<span>[</span>#<span>]</span></td><td><span>rowcol[,&lt;spanCode&gt;] [&lt;aCaption&gt;</span>!;:<span>]</span></td><td>enter first line first cell</td></tr>
+        <tr><td class="tdStart" colspan="2">!;:</td><td><span> caption separator</span> </td></tr>
+        <tr class="typeInst" data-breaklevel="2" ><th colspan="3" class="separator">table</th></tr>
+        <tr><td class="tdStart">***</td><td><span>table [&lt;aCaption&gt;</span>!;:<span>]</span></td><td>enter table<br>no col and colgroup</td></tr>
+        <tr><td class="tdStart">**</td><td><span>table[&lt;spanNbr&gt;] [&lt;aCaption&gt;</span>!;:<span>]</span></td><td>enter colgroup</td></tr>
+        <tr><td class="tdStart">*</td><td><span>table[&lt;spanNbr&gt;] [&lt;aCaption&gt;</span>!;:<span>]</span></td><td>enter col</td></tr>
+        <tr><td class="tdStart">**</td><td><span>[&lt;spanNbr&gt;]</span></td><td>colgroup</td></tr>
+        <tr><td class="tdStart">*</td><td><span>[&lt;spanNbr&gt;]</span></td><td>col</td></tr>
+        <tr><td class="tdStart" colspan="2">!;:</td><td><span> caption separator</span> </td></tr>
+        <tr><td class="tdStart" colspan="2"><span>if immediately followed by<br>thead or tbody and no &lt;spanNbr&gt;</span></td><td><span>auto generated<br>col and colgroup</span> </td></tr>
+        <tr><td colspan="3" class="separator" ></td></tr>
+        <tr><td class="tdStart">**<span>[</span>#<span>]</span></td><td><span>thead[,&lt;spanCode&gt;]</span></td><td>enter thead (sub list)<br>first line first cell</td></tr>
+        <tr><td class="tdStart">**<span>[</span>#<span>]</span></td><td><span>tbody[,&lt;spanCode&gt;]</span></td><td>enter tbody (sub list)<br>first line first cell</td></tr>
+        <tr><td class="tdStart">**<span>[</span>#<span>]</span></td><td><span>tfoot[,&lt;spanCode&gt;]</span></td><td>enter tfoot (sub list)<br>first line first cell</td></tr>
+    
+    </tbody>
+    <tbody>
+        <tr class="groupInst" data-breaklevel="01" ><th colspan="3" >duplicator list <span class="memo">*</span></th></tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td><td></td>
+        </tr>
+    </tfoot>
+</table>
+<label for="monNavigateur">Veuillez choisir un navigateur parmi ceux-ci :
+<input list="navigateurs" id="monNavigateur" name="monNavigateur"/>
+<datalist id="navigateurs">
+  <option value="Chrome">
+  <option value="Firefox">
+  <option value="Internet Explorer">
+  <option value="Opera">
+  <option value="Safari">
+</datalist>
+</label>
+        <br> <p>Le <b>mini-highlighting</b> markPointPage est expérimental !<br>
+        <p>Vous pouvez à tout moment tester votre code markPointPage par l'icône
+        <button style="color:lightseagreen; font-size: 16px; padding: 1px; margin-left: 4px; " title="quick view motif and code test"  type="button">
+            !:_; 
+            </button><br><br>
+
+</div> <!-- //__:Fin homeVScroll --> 
+
+    --></div>
+
+    </div> <!-- //__:Fin fullHomeVScroll --> 
+    
+<div>
+    <div class="wrapVScrollMenu_pml">
+        <div class="vScrollMenu_pml noSelect_pml"  > 
+            <div class="shortMenu_pml" >
+                <button style="display:inline-block; float:right;" title="header scroll" type="button" >
+                    <a href="#Home">
+                    <svg id="homesvg" fill="#DA5770" width="24" height="24" viewBox="0 0 75 75">
+                        <path id="Rearrange" d="M22,52.95H2c-1.1,0-2,0.9-2,2v12c0,1.1,0.9,2,2,2h20c1.1,0,2-0.9,2-2v-12C24,53.85,23.1,52.95,22,52.95z
+                        M20,64.95H4v-8h16V64.95z M22,28.95H2c-1.1,0-2,0.9-2,2v12c0,1.1,0.9,2,2,2h20c1.1,0,2-0.9,2-2v-12C24,29.85,23.1,28.95,22,28.95z
+                        M20,40.95H4v-8h16V40.95z M22,4.95H2c-1.1,0-2,0.9-2,2v12c0,1.1,0.9,2,2,2h20c1.1,0,2-0.9,2-2v-12C24,5.85,23.1,4.95,22,4.95z
+                        M20,16.95H4v-8h16V16.95z M63.4,17.75c-0.8-0.8-1.6-1.5-2.5-2.1l7.5-7.2c1.3-1.3,0.4-3.4-1.4-3.4H34c-1.1,0-2,0.9-2,2v31.7
+                        c0,1.8,2.1,2.7,3.4,1.5l8-7.7c0.2,0.2,0.5,0.4,0.7,0.6c3.6,3.4,5.5,8,5.5,12.8s-1.9,9.3-5.5,12.6c-3.1,3-6,4.8-10.4,5.2
+                        c-2.1,0.2-2.6,3.3-0.4,3.9c3.1,0.9,5,1.4,8.2,1.4c4.2,0,8.2-0.8,11.9-2.2c3.7-1.5,7.1-3.7,10.1-6.5c5.9-5.7,10.5-13.3,10.5-21.3
+                        S69.4,23.45,63.4,17.75z M60.8,57.35c-5,4.8-11.7,7.5-18.8,7.6c1.8-1,3.5-2.2,5-3.6c4.3-4.1,6.7-9.7,6.7-15.5
+                        c0-5.9-2.4-11.5-6.8-15.7c-0.8-0.8-1.6-1.4-2.4-2c-0.6-0.4-1.7-0.6-2.5,0.2l-6,5.6v-25h26.1l-5.6,5.4c-0.4,0.4-0.7,1-0.6,1.6
+                        s0.4,1.1,0.9,1.5c1.4,0.9,2.7,2,3.9,3.1c5.2,4.9,9.3,11.5,9.3,18.5C70,45.95,65.9,52.45,60.8,57.35z"/>                        </svg>
+                    </a>
+                </button>
+                <button style="float:left; margin-left: .5em; margin-right: .5em;" type="button" >
+                    <svg fill="#0000EE" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                </button>
+                <button style="float:left; position: relative; margin-right: .5em; font-weight: bold; color:lightseagreen; font-size: 22px; padding: 2px; padding-top: 2px; margin-left: 4px;" title="quick view motif and code test"  type="button">
+                    !:_;
+                </button>
+                <ul class='menuText inlineList_pml liNoBreak_pml' >
+                    <li><a href="#FluxTxt">Flux</a>
+                    </li><li><a href="#SplitTxt">Split</a>
+                    </li><li><a href="#FormatText">Format</a>
+                    </li><li><a href="#ActionText">Action</a>
+                    </li><li><a href="#List">List</a>
+                    </li><li><a href="#Table">Table</a>
+                        <!--        </li><li><a href="#CustomList">Custom List</a><!-- -->
+                    </li><li><a href="#Form">Form</a>
+                    </li><li><a href="#Mediate">Médiat</a>
+                    </li><li><a href="#SplitDoc">Split doc</a>
+                    </li><li><a href="#Generic">Generic</a>
+                    </li><li><a href="#Style">Style</a>
+                    </li><li><a href="#Mode">Mode</a>
+                    </li><li><a href="#Template">Template</a>
+                    </li><li><a href="#Comment">Comment</a>
+                    </li><li><a href="#Escape">Escape</a>
+                    </li>
+                </ul>
+            </div><!-- //__:Fin shortMenu 
+        --></div><!-- //__:Fin scrollMenu 
+    --></div><!-- //__:Fin wrapVScrollMenu 
+</div>
+<!--  \____View Demo____/  -->
+<div  class="wrapViewDemo">
+<div class="viewDemo_pml" >
+<div>
+    <ul class="noMP_pml noListStyle_pml">
+    <li id="Common" class="noMP_pml">
+        <ul class="noMP_pml noListStyle_pml">
+
+<!-- //////////////////////////////////////////\\_______ test ______// -->
+<li style="position: relative;"><div id="Test" class="patchMenuId_pml" ></div><div class="typeInstr_pml"> Test</div>
+    <ul class="noMP noListStyle_pml">
+    <li><h2 id="" class="hxViewDemo_pml">Simple</h2>
+<pre class="pmlCode_pml">
+
+!**#rowcol,c2/2 cel1/2-1/2 !*#,2 cel1-3/4 !*# cel1-5 
+!**#,/2 cel2/3-3 !*#,2 cel2-4/5 
+!**# cel3-1 !*# cel3-2 !* cel3-4!* cel3-5
+!**# cel4-1 !* cel4-2 !*#_____ cel4-3 !*# ok
+!;
+
+</pre>
+</li><li><h2 id="" class="hxViewDemo_pml">avec titre</h2>
+<pre class="pmlCode_pml">
+
+Multi sélection : !"=
+!**&&:( #testMulti blue" 0'' ) Groupe 1 !* Choix 1-1 !* Choix 1-2
+!***,!* Hors groupe 1 !* Hors groupe 2 !* Hors groupe 3
+!** Groupe 2 !* Choix 2-1 !* Choix 2-2 !* Choix 2-3!;
+!"=
+
+</pre>
+</li><li><h2 id="" class="hxViewDemo_pml">avec entête </h2>
+<pre class="pmlCode_pml">
+
+!*: * Un 1
+!* * Un 2 !b" et une imbriqué !;
+    !*d * Deux 1
+    !* * Deux 2
+    !*, retour root ul
+    !*_ * Deux 3
+!*, Un 2 !b" suite plus!;
+!* * Un 3
+!; et sur une lignes
+    
+</pre>
+</li><li><h2 id="" class="hxViewDemo_pml">complexe</h2>
+<pre class="pmlCode_pml">
+
+avant
+!*x * Un 1 
+!**, retour root ol
+!* * Un 2 !b"et_une_imbriqué
+    !*i * Deux 1
+    !* * Deux 2
+        !*0 Trois 1
+        !* Trois 2
+        !*_ Trois 3
+    !*_ * Deux 3
+!* * Un 3 
+!;
+après
+!"= !// A remarquer que l'écriture avec tabulation n'est pas requise.!;:
+avant
+!*x * Un 1
+!* * Un 2 !b"et_une_imbriqué
+!*i * Deux 1
+!* * Deux 2
+!*0 Trois 1
+!* Trois 2
+!*_ Trois 3
+!*, Deux 2 suite
+!*_ * Deux 3
+!*, Un 2 suite
+!* * Un 3
+!* * Un 4
+!/;
+Fin démo.    
+
+</pre>
+</li><li><h2 id="" class="hxViewDemo_pml">colgroupe</h2>
+<pre class="pmlCode_pml">
+!"*= 
+Quelques exemples en mnémonique
+!"lt%, !"gt%, !"amp%, !"euro%, !"OElig%, !"oelig%, !"laquo%, !"raquo%. 
+Exemples en décimal
+!"60%, !"62%, !"38%, !"128%, !"140%, !"156%, !"171%, !"187%. 
+et en hexadécimal
+!"x3c%,!"x3e%, !"x26%, !"x80%, !"x8C%, !"x9C%, !"xAB%, !"xBB%. 
+
+En pratique pour les données HTML en Unicode 
+on code uniquement !"lt%  !"amp%  et !"gt% par précaution  
+pour ne pas déclencher une interprétation HTML.
+A noter que ce conflit est géré automatiquement par markPointPage.    
+Pour les besoins du texte on utilise aussi:
+L'espace !"nbsp% &nbsp; insécables (en décimal !"160% &#160;).
+Une autre écriture existe !"_%!"_%!"_%!"_%!"_%!"_%!"_%!"_%!"_%ainsi.
+
+le trait d'union !"dash% !"45% !"x002D%  
+le trait d'union condi!"shy%tionnel invisible  !"173% !"x00AD% 
+le trait d'union moyen !"ndash%   !"8211%   !"x2013% 
+le trait d'union long !"mdash%  !"8212%  !"x2014% 
+Voir l'autre écriture possible des tirets plus haut.
+
+Caractère d'écriture des points de suspension ... 
+en Unicode !"..% !"=
+en ascii !"...%
+
+!";
+!"= Rappel : L'écriture direct de balises html n'est pas possible.
+!"= Écrire &amp; ou <br> ne déclenche aucune interprétation de balise html 
+ainsi que &amp;amp; ou &lt;br&gt;.
+!"=
+De même, il n'est pas possible d'écrire avec des codes caractère
+du code html qui s'exécute.!"=
+Par exemple !"lt% br !"gt%  un saut de ligne.!"==
+
+Les emoji ou smileys peuvent utiliser un caractère codé ex:!"=
+!"x1F600%, !"x1F61C%, !"x23F3%et puis!"x1F602% 
+
+</pre>
+
+</li><li><h2 id="" class="hxViewDemo_pml">Autre</h2>
+<pre class="pmlCode_pml">
+</pre>
+        </li>
+    </ul>
+
+
+<!-- //////////////////////////////////////////\\_______ FluxTxt ______// -->
+            <li style="position: relative;"><div id="FluxTxt" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Flux text</div>
+            <ul class="noMP noListStyle_pml">
+
+<!--
+<li><h2 id="" class="hxViewDemo_pml"> PB</h2>
+<pre class="pmlCode_pml">
+
+
+
+</pre></li>
+-->
+
+            <li><h2 id="span" class="hxViewDemo_pml"><span> !"- </span><span> !"-["|=] </span> Span en ligne | inline | inline-block | block|</h2>
+<pre class="pmlCode_pml">
+Attention à la similitude d'écriture avec les tirets.
+!"*= Un !"- span!;, dans un paragraphe, 
+Voici un 
+autre !"-" exemple!"= en inline-block!; pour certains cas!
+!;
+</pre>
+            </li><li><h2 id="div" class="hxViewDemo_pml"><span> !""</span><span> !""-</span> Div en bloc | block | inline-block |</h2>
+<pre class="pmlCode_pml">
+Un !"" premier div normal!; et !"" un deuxième!;
+Une suite de div
+ en inline-block  !""- div 1 !; !""- div!"= 2  !;!""- div 3 !; 
+</pre>
+            </li><li><h2 id="pre" class="hxViewDemo_pml"><span> !""=[-]</span> Pre texte préformaté | block | inline-block |</h2>
+<pre class="pmlCode_pml">
+Un !"=" premier pre
+normal
+    tabulations inclus !; et !"=" un deuxième!;
+Une suite de pre
+ en inline-block !"= !"="- pre 1 !; !"="- pre!"= 2 !;!"="- pre 3 !; 
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ SplitTxt ______// -->
+            </li><li style="position: relative;"><div id="SplitTxt" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Texte rupture</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="h1-6" class="hxViewDemo_pml"><span> !"[1|2|3|4|5|6]"[=]</span> Titre </h2>
+<pre class="pmlCode_pml">
+Titre sur une ligne!:
+!// pour exemple ceci est un commentaire pointMarkup et notez que le
+ mini-highlighting indique un faux semblant d'instruction sur "!`:" !; 
+!"1" Titre de niveau 1
+!"2"( 90%,50%,0%" ) Titre de niveau 2 en couleur
+!"3"= Titre de niveau 3 centré!;
+!"4" Titre de niveau 4
+!"5" Titre de niveau 5
+!"6" Titre de niveau 6
+Titre avec possibilité de plusieurs lignes :
+!"2"= Titre de niveau 2
+autoBR
+et en bloc!;( blue" )
+Titre centré sur une ligne :
+!"2".( orange" ) Titre de niveau 2 
+Titre centré avec plusieurs lignes :
+!"2".= Titre de niveau 2
+autoBR centré
+et en bloc!;( green" )
+
+</pre>
+            </li><li><h2 id="hr" class="hxViewDemo_pml"><span> !"---[2|3|4]</span> Changement thématique, ligne horizontale</h2>
+<pre class="pmlCode_pml">
+!"---
+!"---2( "lightgrey )
+!"---3( "orange )
+!"---4
+</pre>
+            </li><li><h2 id="hr" class="hxViewDemo_pml"><span> !"-[-]% </span> <span> !"-? </span> Tiret | court | long | conditionnel |</h2>
+<pre class="pmlCode_pml">
+demos tiret :
+!"*=
+!"-%tiret court.
+!"--% tiret long.
+
+!;
+!""( 22em' yellow"12%,47%,98%,.95 )
+tiret conditionnel invisible sauf dans un mot posi!"-?tionné en fin
+ de ligne.!"= 
+tiret conditionnel invisible sauf dans un mot positionné en fin de
+ ligne.  
+ !;
+</pre>
+
+            </li><li><h2 id="p" class="hxViewDemo_pml"><span> !"*[=]</span> Paragraphe | normal | autoBr |</h2>
+<pre class="pmlCode_pml">
+!"* Ici le premier paragraphe du texte. 
+Sans saut de ligne généré.!;
+!"---
+!"*= Ici le deuxième paragraphe du texte.
+Avec saut de ligne html <br> généré (autoBr).!"=
+fin du deuxième paragraphe.
+!// A remarqué que le \n (enter) juste après !`"=
+est invisible à l'autoBR car !`"= est
+toujours suivi d'un caractère blanc qui fait parti
+de l'instruction. !/; 
+!;
+</pre>
+            </li><li><h2 id="br" class="hxViewDemo_pml"><span> !"=[=][=]</span> Retour à la ligne</h2>
+<pre class="pmlCode_pml">
+L'instruction
+de saut à la ligne!"= est toujours suivie
+!"= d'un espace!"=!b" ou d'une instruction!;
+!"== double saut de ligne
+!"=== triple saut de ligne 
+</pre>
+            </li><li><h2 id="htmlComment" class="hxViewDemo_pml"><span> !"/[/]</span> Commentaire Html</h2>
+<pre class="pmlCode_pml">
+Un commentaire html n'a pas de rendu :
+!"/ ceci est un commentaire html sur une ligne
+ceci n'appartient pas au commentaire
+!"= teste sur plusieurs lignes : 
+!"// maintenant un commentaire sur
+plusieurs lignes !; suite du texte html
+!"= après test commentaire. 
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ FormatText ______// -->
+        </li><li style="position: relative;"><div id="FormatText" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Format texte !x" </div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml"><span> ![b|e|i|m|s]"</span> bold | embedded | italique | mark | strong | pour attirer l'attention</h2>
+<pre class="pmlCode_pml">
+!"*=
+Autre écriture d'un span
+pour !x.glob" styler du texte!; avec une class glob
+ou !x.globu"l'écriture_collée avec une class globu.
+
+!b" Pour attirer l'attention il existe plusieurs balises.!;
+
+Le !b"bold est utilisé pour les mots-clés sans importance particulière.
+Parfois utilisé pour la première phrase des paragraphes d'un article.
+Les éléments !s"strong, !e"em, ou 
+!m"mark ajoutent une information sémantique.
+
+!s"strong indique un texte d'une certaine importance
+!e"em permet d'insister sur un texte (!e" !b"imbrication possible!;)
+!m"mark représente un texte pertinent (contexte de lecture)
+
+L'!i"italique permet de différencier des mots ou expression.
+Utilisé aussi pour les termes techniques ou de langue étrangère.
+!;
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"><span> ![a|d|r]"</span> abréviation | définition | référence |</h2>
+<pre class="pmlCode_pml">
+!d"dfn indique un terme défini dans la phrase ou le contexte.
+
+!"*= L'abréviation indique la signification par info bull.
+Par exemple:
+!a"{Mozilla Developer Network}MDN est la principale source d'info.
+
+!b" La référence à une source !;
+selon !r" MDN web docs!; la balise cite est une référence 
+qui contient le titre d'une œuvre, publication ...!;
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"><span> !q"["]</span> Citations | citer (source) | citation (longue)|</h2>
+<pre class="pmlCode_pml">
+!"*= !b"La_citation contient le texte d'une source, en ligne entre quote
+avec la !q" balise q !; ou avec
+!q""  la balise blockquote 
+pour les citations longues.!;     
+L'attribut cite de ces balises permet d'indique
+la source d'une citation.
+!;
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"><span> !c"["]</span> Code | inline | block |</h2>
+<pre class="pmlCode_pml">
+!b"code_inline:
+ En javascript on déclare ainsi !c"( "whitesmoke 0px'' 0.3em"^ ) 
+var myVar!;  une variable.
+!"= Voici maintenant du
+!b"code_dans_un_bloc: !c""( "oldlace 0px'' 0.3em"^ )
+var myVar1, myVar2, result
+myVar1 = 2
+myVar2 = 5
+result = myVar1 * myVar2!;
+!// ( "oldlace 0px'' 0.3em"^ ) et ( "whitesmoke 0px'' 0.3em"^ )
+sont facultatif. Cela indique :
+background-color, border-width et border-radius. 
+!;
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"><span> ![u|del|ins]"</span> Correction | souligné | supprimé | ajouté |</h2>
+<pre class="pmlCode_pml">
+!"*=
+Le !u"soulignement permet d'annoter visuellement.
+Il ne doit pas être utilisé
+pour donner de l'importance au sens du texte.
+
+!del"del représente un texte
+supprimé d'un document !del" erreurs du texte!;.
+!ins"ins représente du texte ajouté!ins"  après première rédaction!;.
+!;!"---
+!"*= !b"Et_un_mixe:
+Avant gras,!b" puis !m" marqué et !del" corrrection !;
+!ins" correction !; !; et !u"voila souligné!;, fin du gras.!;
+!;                                
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"><span> !"_</span> <span> !"_"</span> Insécable | normal | collé |</h2>
+<pre class="pmlCode_pml">
+!""( 15em' FF0"124AE7 ) !/ avec width, text color et background-color
+test de texte long avec !"_ des mots insécable.!; !"=                 
+et une autre écriture !"_"collée_de_mots insécable.!"=
+Il existe aussi l'espace!"_%insécable!"_%en code!"_%caractère.!"=
+!;
+!"x1F600%, sans insécable :                    
+!""( 15em' FF0"124AE7 ) !/ avec width, text color et background-color
+test de texte long avec des mots insécable. !"=                 
+et une autre écriture collée de mots insécable.!"=
+Il existe aussi l'espace insécable en code caractère.!"=
+!;
+
+</pre>
+            </li><li><h2 id="charCode" class="hxViewDemo_pml"><span> !"codeChar%</span> Caractère codé</h2>
+<pre class="pmlCode_pml">
+!"*= 
+Quelques exemples en mnémonique
+!"lt%, !"gt%, !"amp%, !"euro%, !"OElig%, !"oelig%, !"laquo%, !"raquo%. 
+Exemples en décimal
+!"60%, !"62%, !"38%, !"128%, !"140%, !"156%, !"171%, !"187%. 
+et en hexadécimal
+!"x3c%,!"x3e%, !"x26%, !"x80%, !"x8C%, !"x9C%, !"xAB%, !"xBB%. 
+
+En pratique pour les données HTML en Unicode 
+on code uniquement !"lt%  !"amp%  et !"gt% par précaution  
+pour ne pas déclencher une interprétation HTML.
+A noter que ce conflit est géré automatiquement par markPointPage.    
+Pour les besoins du texte on utilise aussi:
+L'espace !"nbsp% &nbsp; insécables (en décimal !"160% &#160;).
+Une autre écriture existe !"_%!"_%!"_%!"_%!"_%!"_%!"_%!"_%!"_%ainsi.
+
+le trait d'union !"dash% !"45% !"x002D%  
+le trait d'union condi!"shy%tionnel invisible  !"173% !"x00AD% 
+le trait d'union moyen !"ndash%   !"8211%   !"x2013% 
+le trait d'union long !"mdash%  !"8212%  !"x2014% 
+Voir l'autre écriture possible des tirets plus haut.
+
+Caractère d'écriture des points de suspension ...
+!"..% Unicode
+!"...%ascii
+...navigateur
+!"*;
+!"= Rappel : L'écriture direct de balises html n'est pas possible.
+!"= Écrire &amp; ou <br> ne déclenche aucune interprétation de balise html 
+ainsi que &amp;amp; ou &lt;br&gt;.
+!"= De même, il n'est pas possible d'écrire avec des codes caractère
+du code html qui s'exécute.
+!"= Par exemple !"lt% br !"gt%  un saut de ligne.
+!"==
+Les emoji ou smileys peuvent utiliser un caractère Unicode ex:!"=
+!"x1F600%, !"x1F61C%, !"x23F3%et puis!"x1F602% 
+
+    </pre>
+
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ ActionText ______// -->
+        </li><li style="position: relative;"><div id="ActionText" class="patchMenuId_pml" ></div><div class="typeInstr_pml">action text</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml"><span> !l"["]</span> Liens hyper texte | inline | block |</h2>
+<pre class="pmlCode_pml">
+!b" Un peu à part les liens hyper texte.!;
+!"= Suite de liens en ligne !l"( ^#Home ) Home !;
+!l"( ^#FluxTxt ) FluxTxt !l"( ^#SplitTxt ) SplitTxt !; 
+!"= Suite de liens en bloc !l""( ^#Home ) Home !;
+!l""( ^#FluxTxt ) FluxTxt !l""( ^#SplitTxt ) SplitTxt !;
+
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+            </li>
+        </ul>    
+
+<!-- //////////////////////////////////////////\\_______ List ______// -->
+       </li><li style="position: relative;"><div id="List" class="patchMenuId_pml" ></div><div class="typeInstr_pml"><span> !*[*][type]</span> <span> !*[*]</span> <span> !*[*]_</span>List Html</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="ul_li" class="hxViewDemo_pml"><span> !*[s|c|d|t|n|.|.-] </span> square | circle | disk | triangle | none | default | horizontale-none | Liste à puces</h2>
+<pre class="pmlCode_pml">
+avant
+!*: * Un 1
+!*_ * Un 2 !b" et une imbriqué !;
+    !*c * Deux 1
+    !* * Deux 2
+    !*_ * Deux 3
+!;!/ A remarquer ces deux fin d'instructions nécessaires.
+avant
+!*: * Un 1
+!* * Un 2 !b" et une imbriqué !;
+    !*d * Deux 1
+    !* * Deux 2
+    !*, retour root ul
+    !*_ * Deux 3
+!*, Un 2 !b" suite plus!;
+!* * Un 3
+!; et sur une lignes !*h * Un 1!* * Un 2!* * Un 3!;
+!"= centrée dans un div !"".!*h * Un 1!* * Un 2!* * Un 3!"; fin
+!"= autre exemple centrée dans un div
+!"".!*n * Un 1!* * Un 2 grand !* * Un 3!"; fin
+!"= deux autres !"= exemples centrées dans un span
+!"-.!*1 * Un 1!* * Un 2 grand !* * Un 3!"; l'autre
+!"-.!*n * Un 1!* * Un 2 grand !* * Un 3!"; fin demo
+</pre>
+    </li><li><h2 id="ol_li" class="hxViewDemo_pml"> <span> !*[x|1|0|i|I|α][-&lt;nStart>] </span> Liste ordonnée</h2>
+<pre class="pmlCode_pml">
+avant
+!*x * Un 1 
+!**, retour root ol
+!* * Un 2 !b"et_une_imbriqué
+    !*i * Deux 1
+    !* * Deux 2
+        !*0-3 Trois 1 !/ avec start à 3
+        !* Trois 2
+        !*_ Trois 3
+    !*_ * Deux 3
+!* * Un 3
+!;
+après
+!"= !// A remarquer que l'écriture avec tabulation n'est pas requise.!;:
+avant
+!*x * Un 1
+!* * Un 2 !b"et_une_imbriqué
+!*i * Deux 1
+!* * Deux 2
+!*0--1 Trois 1 !/ avec start à -1 
+!* Trois 2
+!*_ Trois 3
+!*, Deux 2 suite
+!*_ * Deux 3
+!*, Un 2 suite
+!* * Un 3
+!* * Un 4
+!/; !/ la fermeture du commentaire !`/; ferme aussi la séquence !`*x 
+Fin démo.
+</pre>
+            </li><li><h2 class="hxViewDemo_pml"><span> !*[*][:] </span> Liste de définition</h2>
+<pre class="pmlCode_pml">
+avant
+!**:: Un à définir
+    !* définition 1
+!*, retour root dl 
+    !* définition 2
+!** Autre à définir
+    !* définition 2-1
+        !*.d Trois 1
+        !* Trois 2
+        !*_ Trois 3
+    !*, retour définition 2-1
+    !* définition 2-2
+!;après
+!**:: Un à définir
+    !* définition 1
+    !* définition 2
+!*, retour root dl 
+!** Autre à définir
+    !* def
+    !* fin
+!;après
+!**:: Un à définir
+    !* définition 1
+!;après
+</pre>
+            </li><li><h2 id="datalist" class="hxViewDemo_pml"><span> !*- </span> Data liste option</h2>
+<pre class="pmlCode_pml">
+avant
+!*o un !* deux !* fin
+!;après
+</pre>
+            </li><li><h2 id="selectOptgroup" class="hxViewDemo_pml"><span> !*[*][&|v] </span> multi | single |  Select liste</h2>
+<pre class="pmlCode_pml">
+Multi sélection : !"=
+!**&&:=( #testMulti blue" 0'' ) Groupe 1 !* Choix 1-1 !* Choix 1-2
+!***, !* Hors groupe 1 !* Hors groupe 2 !* Hors groupe 3
+!** Groupe 2 !* Choix 2-1 !* Choix 2-2 !*_ Choix 2-3!;
+!"=
+Simple sélection :  
+!*&= Choix 1
+!* Choix 2
+!* Choix 3
+!* Choix 4!;
+Autre simple sélection :  
+!*& Choix 1
+!* Choix 2
+!* Choix 3
+!* Choix 4!;
+Sélection avec groupe :  
+!**& Groupe 3 !* Choix 3-1 !* Choix 3-2 !* Choix 3-3
+!** Groupe 4 !* Choix 4-1 !* Choix 4-2 !* Choix 4-3!;
+!"==
+Sélection simple liste et groupe : 
+!***&:=( 0.5em"^ 3px''blueviolet )
+!* Choix 4-1
+!* Choix 4-2
+!* Choix 4-3
+!** Groupe 5
+    !* Choix 5-1
+    !* Choix 5-2
+    !* Choix 5-3
+!;!"=
+Sélection groupe et simple liste : 
+!***&5=( white"black ) 
+!** Groupe 5
+    !* Choix 5-1
+    !* Choix 5-2
+    !* Choix 5-3
+!***,
+!* Choix 4-1
+!* Choix 4-2
+!* Choix 4-3
+!;  après
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ Table ______// -->
+        </li><li style="position: relative;"><div id="Table" class="patchMenuId_pml" ></div><div class="typeInstr_pml"> Table</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">Simple</h2>
+<pre class="pmlCode_pml">
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml">avec titre</h2>
+<pre class="pmlCode_pml">
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml">avec entête </h2>
+<pre class="pmlCode_pml">
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml">complexe</h2>
+<pre class="pmlCode_pml">
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml">colgroupe</h2>
+<pre class="pmlCode_pml">
+</pre>
+
+    </li><li><h2 id="" class="hxViewDemo_pml">Autre</h2>
+<pre class="pmlCode_pml">
+</pre>
+                </li>
+            </ul>
+
+
+<!-- //////////////////////////////////////////\\_______ CustomList ______//
+        </li><li style="position: relative;"><div id="CustomList" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Custom liste</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">Menu</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Tree view</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Table des matière</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Verticale scroll et horizontale scroll</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Layer</h2>
+<pre class="pmlCode_pml">
+</pre>
+                </li>
+            </ul>
+-->
+<!-- //////////////////////////////////////////\\_______ Form ______// -->
+        </li><li style="position: relative;"><div id="Form" class="patchMenuId_pml" ></div><div class="typeInstr_pml"> Formulaire</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">Form</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Légende </h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Label</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Input Case à cocher</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Input Radio bouton</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Input Bouton</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Input </h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">Input</h2>
+<pre class="pmlCode_pml">
+</pre>
+
+
+
+
+
+            </li><li><h2 id="" class="hxViewDemo_pml">Input</h2>
+<pre class="pmlCode_pml">
+</pre>
+                </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ Mediate ______// -->
+        </li><li style="position: relative;"><div id="Mediate" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Contenu intégré Médiat (mediate) !"...^</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="span" class="hxViewDemo_pml">img</h2>
+<pre class="pmlCode_pml">
+en ligne !"^  !; ou en bloc !""^  !; 
+</pre>
+            </li><li><h2 id="code" class="hxViewDemo_pml">highlighting code</h2>
+<pre class="pmlCode_pml">
+!b"code_highlighting_si_disponibles_: !"=
+En javascript on déclare ainsi !"js^ var myVar!; une variable.
+!"= Voici maintenant du !b"code_dans_un_inline_bloc_:
+!"js"^ var myVar1, myVar2, result
+myVar1 = 2
+myVar2 = 5
+result = myVar1 * myVar2!;
+!"=!b"et_dans_un_bloc_: !"js^" var myVar1, myVar2, result
+myVar1 = 2
+myVar2 = 5
+result = myVar1 * myVar2!;
+</pre>
+            </li><li><h2 id="blockquote" class="hxViewDemo_pml">iframe</h2>
+<pre class="pmlCode_pml">
+Un !"^- premier iframe normal!; et !"^- un deuxième!; !"=
+Une suite de iframe!"= en block !"^= iframe 1 !;!"^= iframe 2 !; 
+</pre>
+            </li><li><h2 id="blockquote" class="hxViewDemo_pml">Conteneur de médiat </h2>
+<pre class="pmlCode_pml">
+!*audio^
+!*^source{ src=myAudio.mp3 type=audio/mpeg }
+!"* Audio pas pris en charge vous pouvez le télécharger
+!l"{ (>myAudio.mp3} ici!; !;
+!;
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ Split doc ______// -->
+</li><li style="position: relative;"><div id="SplitDoc" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Split doc</div>
+    <ul class="noMP noListStyle_pml">
+    <li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li>
+    </ul>    
+<!-- //////////////////////////////////////////\\_______ Generic ______// -->
+</li><li style="position: relative;"><div id="Generic" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Generic</div>
+    <ul class="noMP noListStyle_pml">
+    <li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li>
+    </ul>    
+<!-- //////////////////////////////////////////\\_______ Style ______// -->
+</li><li style="position: relative;"><div id="Style" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Style</div>
+    <ul class="noMP noListStyle_pml">
+    <li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li><li><h2 id="" class="hxViewDemo_pml"></h2>
+<pre class="pmlCode_pml">
+
+</pre>
+    </li>
+    </ul>    
+<!-- //////////////////////////////////////////\\_______ Mode ______// -->
+        </li><li style="position: relative;"><div id="Mode" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Mode</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">AutoBr</h2>
+<pre class="pmlCode_pml">
+
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">AutoP</h2>
+<pre class="pmlCode_pml">
+
+</pre>
+            </li>
+            </ul>    
+<!-- //////////////////////////////////////////\\_______ Template ______// -->
+        </li><li style="position: relative;"><div id="Template" class="patchMenuId_pml" ></div><div class="typeInstr_pml">constant template</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">un</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">deux</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">trois</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">quatre</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ Comment ______// -->
+        </li><li style="position: relative;"><div id="Comment" class="patchMenuId_pml" ></div><div class="typeInstr_pml">Commentaire</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="wordCmt" class="hxViewDemo_pml">de mots</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="lineCmt" class="hxViewDemo_pml">de ligne</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="linesCmt" class="hxViewDemo_pml">de lignes</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="blocCmt" class="hxViewDemo_pml">de bloc</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ Escape ______// -->
+        </li><li style="position: relative;"><div id="Escape" class="patchMenuId_pml" ></div><div class="typeInstr_pml">échappement</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="escapeInst" class="hxViewDemo_pml">en place</h2>
+<pre class="pmlCode_pml">
+    Pour échapper une instruction : 
+    !"= on ajoute, après le marker (!) un accent grave !b" (`) !; 
+    !"= Exemple pour écrire sans exécuter une instruction de saut de ligne : 
+    !"= Le saut de ligne s'écrit !`"= et !``"= pour ne pas l'exécuter.
+</pre>
+            </li><li><h2 id="lineCmt" class="hxViewDemo_pml">pause temporaire</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="linesCmt" class="hxViewDemo_pml">deux ou trois markers</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li>
+            </ul>
+<!-- //////////////////////////////////////////\\_______ MyId ______// -->
+        </li><!--<li style="position: relative;"><div id="MyId" class="patchMenuId_pml" ></div><div class="typeInstr_pml">modèle</div>
+            <ul class="noMP noListStyle_pml">
+            <li><h2 id="" class="hxViewDemo_pml">un</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">deux</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">trois</h2>
+<pre class="pmlCode_pml">
+</pre>
+            </li><li><h2 id="" class="hxViewDemo_pml">quatre </h2>
+<pre class="pmlCode_pml">
+</pre>
+<!-- -->
+        </li>
+        </ul>
+    </li>
+    </ul>
+    </div>
+</div><!--Fin viewDemo-->
+
+
+
+
+
+
+
+</div><!--fin wrapViewDemo-->
+</div><!--Fin allPage-->
+
+</div><!--Fin wrapAllPage-->
+      
+</div><!--Fin scrollLe-->
+
+</body>
+</html>

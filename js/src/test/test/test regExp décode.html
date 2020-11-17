@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<!-- Project:markPointPage -->
+<html>
+<head>
+    <title>decode regExp test markPointPage</title>
+	<meta name="description" content="decode regExp test markPointPage" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="pml" />
+
+<!--    <meta name="robots" content="noindex" /> <!-->
+
+<!--   <script src="../../markPointPage.js" > </script><!--> 
+    <script type="text/javascript">
+        "use strict"
+        try{ "".a = ""; console.log( "decode regExp test markPointPage","not in strict mode" ) } catch( e ){}
+        function initRegExp(){
+            document.getElementById("iMarker").value = '!' 
+            document.getElementById("iTarget").value = '(`?\\.?["*=#^\\\\\\/\\-~<>]*_?)'
+            document.getElementById("iCmdName").value = '(:*\\.?[\\w\\-\\&]*)((?:[#@\\.=:]\\w+)*(?:_(?!_))?)'
+            document.getElementById("iPropertyEnd").value = '([\?"=%#<>^\\-:\\\\\\/\\.\\|]*(?:_(?!_))?)(;)?'  
+            document.getElementById("iEasyArea").value = '(?:\\(((?:.?\\n*)+)\\))?' 
+            document.getElementById("iFreeArea").value = '(?:{((?:.?\\n*)+)})?' 
+            document.getElementById("iEndSpace").value = ',?(?:(\\s?)|(_?))' 
+            changeRegExp()
+            }
+        function changeRegExp (){
+            const iRegExp = document.getElementById("iRegExp")
+                iRegExp.value = document.getElementById("iMarker").value
+                +document.getElementById("iTarget").value
+                +document.getElementById("iCmdName").value
+                +document.getElementById("iPropertyEnd").value
+                +document.getElementById("iEasyArea").value
+                +document.getElementById("iFreeArea").value
+                +document.getElementById("iEndSpace").value
+            const mpText = document.getElementById("mpText")
+            const decode = document.getElementById("decode")
+            var regTest = new RegExp(iRegExp.value,"g")
+            var temp, rep=""
+            while (temp= regTest.exec(mpText.textContent)){ 
+                rep +=
+                temp[0]+"\n"+ 
+                " motif("+temp[1]+temp[4]
+                +(temp[4] ? ") property ("+temp[4]:"")
+                +(temp[5] ? ") end ("+temp[5]:"")
+                +(temp[2] ? ") cmdName ("+temp[2]:"")
+                +(temp[3] ? ") param ("+temp[3]:"")
+                +(temp[6] ? ") easyArea ("+temp[6]:"")
+                +(temp[7] ? ") freeArea ("+temp[7]:"")
+                +(temp[8] ? ") endSpaceCharCode ("+temp[8].charCodeAt(0):"")
+                +")\n"
+                }
+            decode.textContent = rep.toString()
+            }
+        
+        </script>
+    </head>
+
+<body onload="initRegExp()">
+    <label for="regExpInput">Les regExp :<br></label>
+    <input list="regExp" id="regExpInput" name="monNavigateur"/>
+    <datalist id="regExp">
+        <option value="marker">
+        <option value="target">
+        <option value="actionName">
+        <option value="property">
+        <option value="freeArea">
+        <option value="endSpace">
+        </datalist>
+<div style="font-size: 18px;">
+    marker :<br />
+    <input id='iMarker' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    target :<br />
+    <input id='iTarget' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    actionsName :<br />
+    <input id='iCmdName' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    property end :<br />
+    <input id='iPropertyEnd' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    easyArea :<br />
+    <input id='iEasyArea' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    freeArea :<br />
+    <input id='iFreeArea' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br />
+    endSpace :<br />
+    <input id='iEndSpace' style="width:20em;font-size: 20px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br /><br />
+    regExp :<br />
+    <input id='iRegExp' style="width:80em;font-size: 16px;"
+        type="text"
+        onchange="changeRegExp()">
+    <br /><br />
+    Texte à décoder :
+    <pre id="mpText" contenteditable="true" onchange="changeRegExp()">
+        !**action_Test.action.jom.=={ test    retest } bibop
+        !*-actionbtest!"=!b" test bold!;!*.0. test
+        </pre>
+    embedded instructions :
+    <pre id="decode"></pre>
+</div>
+</body>
+</html>
